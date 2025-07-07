@@ -1,21 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const User = require('../models/User');
-
-// POST create user
-router.post('/', async (req, res) => {
-  try {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
+const mongoose = require('mongoose');
+const UserSchema = new mongoose.Schema({
+  name: String,
+  email: { type: String, unique: true },
+  password: String
 });
-
-// GET all users
-router.get('/', async (req, res) => {
-  const users = await User.find();
-  res.json(users);
-});
-
-module.exports = router;
+module.exports = mongoose.model('User', UserSchema);
